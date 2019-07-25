@@ -66,3 +66,36 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+
+
+
+
+
+项目原型图：
+https://org.modao.cc/app/316a9db80c5245bcb58601f2bdc7e217
+
+
+依赖
+npm i redux redux-thunk react-redux -S 
+npm i react-router-dom -S
+npm i node-sass -D
+
+fastclick: https://github.com/ftlabs/fastclick
+
+
+redux duck:
+https://github.com/erikras/ducks-modular-redux/blob/master/battlecry/generators/duck/duck.generator.js
+
+
+
+
+
+
+
+
+
+
+
+
+
