@@ -1,4 +1,11 @@
 #home{
+    .scrollContent{
+        position: absolute;
+        top: .88rem;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+    }
     .banner{
         img{
             width: 100%;

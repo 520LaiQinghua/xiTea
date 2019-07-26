@@ -1,12 +1,25 @@
 #menu{
+  .scrollContent{
     display: flex;
+    position: absolute;
+    top: 1.04rem;
+    left: 0;
+    bottom: 0;
+    width: 100%;
     .nav{
         width: 100px;
         .nav-item{
+            // width: 100px;
+            height: 16px;
             padding: 18px 5px;
             font-size: 14px;
-            line-height: 18px;
+            line-height: 16px;
             text-align: center;
+            &.active{
+                border: 2px solid  #f17ff1c9;
+               
+                border-radius: 15px;
+            }
         }
     }
     .list{
@@ -14,10 +27,11 @@
         .menu-list{
             .list-title{
                 line-height: 30px;
-                background: #f3f3f3;
-                padding: 0 10px;
-                font-size: 14px;
+                background: rgba(212, 55, 8, 0.356);
+                padding: 0rem .3rem;
+                font-size: 17px;
                 color: #555;
+                border-radius: 15px;
             }
         }
         .menu-item{
@@ -66,4 +80,5 @@
             }
         }
     }
+  }
 }

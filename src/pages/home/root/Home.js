@@ -5,7 +5,8 @@ import Banner from './children/Banner'
 import ShopBar from './children/ShopBar'
 import List from './children/List'
 import './style.scss';
-import AppScroll from '../../../components/app-scroll/AppScroll';
+import AppScroll from '../../../components/app-scroll/AppScroll'
+import AppHeader from '../../../components/app-header/index'
 
 
 class Home extends Component {
@@ -13,7 +14,8 @@ class Home extends Component {
         let {banner, selectShop} = this.props;
         return (
             <div className="page" id="home">
-                <AppScroll>
+                <AppHeader title="喜茶时光"></AppHeader>
+                <AppScroll className="scrollContent">
                 <Banner data={banner}/>
                 <ShopBar shop={selectShop}/>
                 <List/>
