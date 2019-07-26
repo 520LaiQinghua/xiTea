@@ -14,7 +14,9 @@ class AppScroll extends Component {
         );
     }
     componentDidMount(){
-        let scroll = this.scrollView = new BScroll(this.wrapper.current
+        let scroll = this.scrollView = new BScroll(this.wrapper.current,{
+            probeType: this.props.onScroll?3:1
+        }
          );
         //在用户需要滚动前及时更新滚动视图
         scroll.on('beforeScrollStart',()=>{

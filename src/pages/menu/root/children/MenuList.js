@@ -27,7 +27,7 @@ export default class MenuList extends Component{
         this.listDOM = [];
         return (
        
-            <AppScroll className="list" ref={this.scroll}>
+            <AppScroll className="list" ref={this.scroll} onScroll={this.handleScroll}>
                 {
                    data.map((listInfo,i)=>{
                     let dom = React.createRef();
@@ -65,5 +65,18 @@ export default class MenuList extends Component{
         
     }
 
-
+    handleScroll = (y)=>{
+        this.listDOM.forEach(({current:dom}, i)=>{
+            let maxY=0;
+            let minY = 0;
+            for(let j=0;j<i;j++){
+                maxY -= this.listDOM[j].current.offsetHeight;
+            }
+            minY = maxY-this.listDOM[i].current.offsetHeight;
+            if(y>minY&&y<=maxY){
+                this.props.onChange(i);
+            }
+            
+        })
+    }
 }
