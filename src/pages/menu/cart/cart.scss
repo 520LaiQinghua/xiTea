@@ -5,44 +5,69 @@
         top: 44px;
         left: 0;
         bottom: 0;
-        .cart-item{
-            display: flex;
-            padding: 10px 20px;
-            .left{
-                width: 70px;
-                img{
-                    width: 100%;
-                }
+        .cart-item-wrap{
+            position: relative;
+            .delete-btn{
+                position: absolute;
+                top: 0;
+                right: 0;
+                z-index: 1;
+                height: 100%;
+                width: 80px;
+                background: rgba(216, 174, 226, 0.541)
+                ;
+                color: #fff;
+                text-align: center;
+                line-height: 76px;
+                font-size: 28px;
+                font-weight: bold;
             }
-            .center{
-                flex: 1;
-                margin: 0 10px;
-                .title{
-                    font-size: 14px;
+            .cart-item{
+                &.active{
+                    transition: 200ms;
                 }
-            }
-            .right{
-                .price{
-                    color: #f00;
-                    padding: 5px 0;
+                background: #fff;
+                position: relative;
+                z-index: 2;
+                display: flex;
+                padding: 10px 20px;
+                .left{
+                    width: 70px;
+                    img{
+                        width: 100%;
+                    }
                 }
-                .handle{
-                    border: 1px solid #ddd;
-                    border-radius: 4px;
-                    span{
-                        padding: 0 6px;
-                        border-right: 1px solid #ddd;
-                        &:last-of-type{
-                            border: none;
-                        }
-                        &.btn.disabled{
-                            background: #f3f3f3;
-                            color: #999;
+                .center{
+                    flex: 1;
+                    margin: 0 10px;
+                    .title{
+                        font-size: 14px;
+                    }
+                }
+                .right{
+                    .price{
+                        color: #f00;
+                        padding: 5px 0;
+                    }
+                    .handle{
+                        border: 1px solid #ddd;
+                        border-radius: 4px;
+                        span{
+                            padding: 0 6px;
+                            border-right: 1px solid #ddd;
+                            &:last-of-type{
+                                border: none;
+                            }
+                            &.btn.disabled{
+                                background: #f3f3f3;
+                                color: #999;
+                            }
                         }
                     }
                 }
             }
         }
+        
     }
     .sum{
         width: 100%;
@@ -61,4 +86,5 @@
      color: #f00;
      font-size: .48rem;
     }
+
 }

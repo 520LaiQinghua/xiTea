@@ -1,45 +1,125 @@
-import React from 'react';
+import React,{Component} from 'react';
 //全局函数，需要用connect作为连接函数去使用
 import {connect} from 'react-redux'
-import {modifyTeaAction} from '../../../../store/modules/cart'
+import { modifyTeaAction, deleteTeaAction} from '../../../../store/modules/cart'
 
-const CartItem = ({data,handleTeaCount})=>(
-   
-    <div className="cart-item border-bottom">
-    <div className="left">
-        <img src={data.imageUrl} alt="买东西啦"/>
-    </div>
-    <div className="center">
-        <h3 className="title">{data.name}</h3>
-    </div>
-    <div className="right">
-        <p className="price">¥{data.price}</p>
-        <div className="handle">
-            {/* 设置购物车数量的增加和减少，考虑好三目运算符号的格式 */}
-            <span className={"btn "+(data.count===1?'disabled':'')}
-                onClick={()=>{
-                    (data.count>1) && handleTeaCount('reduce', data.id);
-                }}>-</span>
-            <span className="num">{data.count}</span>
-            <span className="btn"
-                onClick={()=>handleTeaCount('add', data.id)}>+</span>
+class CartItem extends Component {
+    item = React.createRef();
+  
+    render() {
+      let {data, handleTeaCount, deleteTea} = this.props;
+      return (
+        <div className="cart-item-wrap">
+          <div className="delete-btn iconfont icon-lajixiang" onClick={()=>deleteTea(data.id)} />
+  
+          <div ref={this.item} className="cart-item border-bottom">
+            <div className="left">
+              <img src={data.imageUrl} alt="" />
+            </div>
+            <div className="center">
+              <h3 className="title">{data.name}</h3>
+            </div>
+            <div className="right">
+              <p className="price" onChange={this.handlePrice}>¥{data.price}</p>
+              <div className="handle">
+                <span
+                  className={"btn " + (data.count === 1 ? "disabled" : "")}
+                  onClick={() => {
+                    data.count > 1 && handleTeaCount("reduce", data.id);
+                  }}
+                >
+                  -
+                </span>
+                <span className="num">{data.count}</span>
+                <span
+                  className="btn"
+                  onClick={() => handleTeaCount("add", data.id)}
+                >
+                  +
+                </span>
+              </div>
+            </div>
+          </div>
+        
         </div>
-    </div>
-</div>
-
-
-
-)
-const mapStateToProps = (state, props)=>({
-    
-})
-const mapDispatchToProps = (dispatch, props)=>({
-    // 操作购物车的数量
-    handleTeaCount(flag, id){
-        //从store中传入pramas参数进来运算,flag值为'add'还是'reduce'
-        let action = modifyTeaAction({flag, id});
-        dispatch(action);
+      );
     }
-})
+  
+    componentDidMount(){
+        //计算商品价格
+     this. handlePrice();
+      // 给item添加拖拽
+      this.addTrag();
+    }
+    handlePrice= ()=>{
+     let total = this.props.data.price;
+     let num = parseFloat(document.querySelector('.num').innerHTML);
+    
+     total += total*num;
+     console.log(total);
+     
+    }
+    addTrag = ()=>{
+      //   给item添加拖拽事件
+      let dom = this.item.current;
+      let offsetX= 0;
+      dom.addEventListener('touchstart', (ev)=>{
+          // 获得起始位置
+          let {clientX: startX} = ev.changedTouches[0];
+          startX = startX  - offsetX;
+  
+          // 给dom删除过渡效果
+          dom.className = 'cart-item border-bottom';
+  
+          const moveEvent = (ev)=>{
+              // 获得手指移动时的当前的位置
+              let {clientX} = ev.changedTouches[0];
+              // 获得偏移量
+              offsetX = clientX - startX;
+              if(offsetX < 0 && offsetX >= -100){
+                  dom.style.left = offsetX + 'px';
+              }
+          };
+          dom.addEventListener('touchmove', moveEvent);
+  
+          const endEvent = (ev)=>{
+              // 给dom添加过渡效果
+              dom.className = 'cart-item border-bottom active';
+  
+              if(offsetX <= -50){
+                  offsetX = -100;
+                  dom.style.left = '-100px';
+              }else{
+                  offsetX = 0;
+                  dom.style.left = 0;
+              }
+  
+              // 移除事件
+              dom.removeEventListener('touchmove', moveEvent);
+              dom.removeEventListener('touchend', endEvent);
+          };
+          dom.addEventListener('touchend', endEvent);
+      })
+    }
+  
+  }
+  const mapStateToProps = (state, props) => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(CartItem);
+  const mapDispatchToProps = (dispatch, props) => ({
+    // 操作购物车的数量
+    handleTeaCount(flag, id) {
+      let action = modifyTeaAction({ flag, id });
+      dispatch(action);
+    },
+  //   删除商品
+    deleteTea(id){
+        let action = deleteTeaAction({id});
+          dispatch(action);
+    }
+  });
+  
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(CartItem);
+  

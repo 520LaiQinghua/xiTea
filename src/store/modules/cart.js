@@ -1,6 +1,7 @@
 //types
 const ADD_TEA = 'cart/add_tea';
 const MODIFY_TEA = 'cart/modify_tea';
+const DELETE_TEA = 'cart/delete_tea';
 
 //state
 const cartData = [];
@@ -54,8 +55,15 @@ export default (state = cartData,action)=>{
            
         }
     });
+         
+        // 删除购物车中的茶
+        case DELETE_TEA:
+            // 找到需要删除的下标
+            let j = state.findIndex(teaInfo=>teaInfo.id === action.value.id);
+            //过滤state，执行删除
+            return state.filter((item, i)=>(i!==j));
     default:
-            return state;
+    return state;
 };
 
 
@@ -69,4 +77,8 @@ export const modifyTeaAction = (params)=>({
     type:MODIFY_TEA,
     value:params
     //传入的是id值，表示是id，增加还是减少，以及获取的修改值
+})
+export const deleteTeaAction = (params) => ({
+    type: DELETE_TEA,
+    value: params//商品id
 })
