@@ -1,22 +1,10 @@
-import React,{Component} from 'react'
+import React,{PureComponent} from 'react'
 import AppScroll from '../../../../components/app-scroll/AppScroll'
+import Item from "./Item";
 
-const Item = (props)=>(
-    <div className="menu-item border-bottom">
-      <div className="pic">
-            <img src={props.imageUrl} alt="您想喝什么果汁呢"/>
-        </div> 
-        <div className="content">
-            <h3 className="title">{props.name}</h3>
-            <p className="desc">{props.desc}</p>
-            <p className="price">
-                <span>¥{props.price}</span>
-                <span className="buy">购买</span>
-            </p>
-        </div> 
-    </div>
-) 
-export default class MenuList extends Component{
+ 
+//使用PureComponent让MenuList渲染次数减少，让react的性能得到优化,使用connect也是可以得到相应的优化的
+export default class MenuList extends PureComponent{
     //防止在还未 执行render()的前提下把空数组push进去
     listDOM = [];
     //通过拿出dom的offsetHeight来操作滚动视图
@@ -36,8 +24,9 @@ export default class MenuList extends Component{
                             <div className="menu-list border-bottom" ref={dom} key={listInfo.id}>
                             <h3 className="list-title">{listInfo.name}</h3>
                             {
-                                 listInfo.data.map(item=>(
-                                    <Item key={item.id} {...item}/>
+                                 listInfo.data.map((item,index)=>(
+                                     //data={item}不是用解构的方式来写则是考虑到点击时需要将整个data传值过去
+                                    <Item key={item.id} data={item}/>
                                 ))
                             }
                            </div>
@@ -48,23 +37,21 @@ export default class MenuList extends Component{
          
          )
     }
-    componentDidUpdate(oldProps){
+   scrollToIndex(index){
         // console.log('componentDidUpdate...');
-        if(oldProps.selected !== this.props.selected){
-             //滚动视图，到对应的菜单
-            //根据下标计算需要偏移的高度
-            let height = 0;
-            this.listDOM.forEach(({current:dom}, i)=>{
-                if(i < this.props.selected){
-                    height -= dom.offsetHeight;
-                }
-            })
-            //操作滚动视图，让菜单滚动到对应位置
-            this.scroll.current.scrollTo(height);
+       
+            //滚动视图，到对应的菜单
+           //根据下标计算需要偏移的高度
+           let height = 0;
+        for(let i = 0; i < index; i++){
+            let dom = this.listDOM[i].current;
+            height -= dom.offsetHeight;
         }
-        
-    }
+           //操作滚动视图，让菜单滚动到对应位置
+           this.scroll.current.scrollTo(height);
 
+   }
+     // 处理滚动事件，查到应该选中的菜单类型
     handleScroll = (y)=>{
         this.listDOM.forEach(({current:dom}, i)=>{
             let maxY=0;
@@ -74,7 +61,8 @@ export default class MenuList extends Component{
             }
             minY = maxY-this.listDOM[i].current.offsetHeight;
             if(y>minY&&y<=maxY){
-                this.props.onChange(i);
+                 //设置flag:'menu'是防抖得作用，主要是在Menu内部Update生命周期中有着多次更新！
+                this.props.onChange({index:i,flag:'menu'})
             }
             
         })

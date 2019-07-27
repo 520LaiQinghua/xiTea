@@ -9,7 +9,9 @@ export default (props)=>{
         {
             props.data.map((item,index)=>(
                 <li className={"nav-item border-bottom "+(selected===index?'active':'')} key={item.id}
-                onClick={()=>onChange(index)}>
+                //设置flag:'nav'是防抖得作用，主要是在Menu内部Update生命周期中有着多次更新！
+                onClick={()=>onChange({index,flag:'nav'})}>
+                   
                     {item.name}
                 </li>
             ))

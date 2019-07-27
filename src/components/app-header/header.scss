@@ -14,3 +14,15 @@
     line-height: 44px;
     font-size: 16px;
 }
+.app-header .header-left-btn, .app-header .header-right-btn{
+    padding: 10px 10px;
+    position: absolute;
+    top: 0;
+    font-size: 24px;
+}
+.app-header .header-left-btn{
+    left: 10px;
+}
+.app-header .header-right-btn{
+    right: 10px;
+}
